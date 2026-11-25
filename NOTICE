@@ -1,0 +1,16 @@
+Gladys WHOOP integration
+Copyright 2026 William Deren
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+The data come from the user's own WHOOP membership through the official WHOOP
+Developer Platform API (https://developer.whoop.com), with an app the user
+creates on https://developer-dashboard.whoop.com, under the WHOOP API terms.
+No WHOOP code is included.
+
+This community integration is not affiliated with, endorsed or sponsored by
+WHOOP, Inc. WHOOP is a trademark of WHOOP, Inc., used here only to name the
+service and its data.
+
+The data are those of a consumer wearable: they are not medical data and
+must not be used for a medical decision.

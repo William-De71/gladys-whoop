@@ -1,0 +1,1413 @@
+{
+  "manifest_version": 1,
+  "type": "device",
+  "name": "WHOOP",
+  "description": {
+    "en": "WHOOP recovery, strain, sleep and workouts in Gladys, with scenes and widgets.",
+    "fr": "Récupération, effort, sommeil et entraînements WHOOP dans Gladys, avec scènes et widgets.",
+    "de": "WHOOP-Erholung, Belastung, Schlaf und Trainings in Gladys, mit Szenen und Widgets.",
+    "es": "Recuperación, esfuerzo, sueño y entrenamientos de WHOOP en Gladys, con escenas y widgets."
+  },
+  "version": "0.1.0",
+  "docker_image": "ghcr.io/william-de71/gladys-whoop:0.1.0",
+  "gladys_version": ">=5.3.0",
+  "categories": ["leisure", "services"],
+  "keywords": [
+    "WHOOP 4.0",
+    "WHOOP MG",
+    "fitness tracker",
+    "bracelet",
+    "recovery",
+    "récupération",
+    "strain",
+    "sommeil",
+    "sleep tracker",
+    "HRV"
+  ],
+  "cover_image": "https://raw.githubusercontent.com/William-De71/gladys-whoop/main/cover.jpg",
+  "transports": ["cloud"],
+  "config_schema": [
+    {
+      "key": "intro",
+      "type": "section",
+      "label": {
+        "en": "1. Your WHOOP app",
+        "fr": "1. Votre application WHOOP",
+        "de": "1. Deine WHOOP-App",
+        "es": "1. Su aplicación WHOOP"
+      },
+      "description": {
+        "en": "WHOOP gives no shared key: sign in to developer-dashboard.whoop.com with your WHOOP account, create a team, then a free app with every read scope. As redirect URL, enter exactly https://my.gladysassistant.com/redirect/oauth. Then copy its Client ID and Client Secret below. Up to 10 members can connect to an app without any request to WHOOP.",
+        "fr": "WHOOP ne fournit pas de clé partagée : connectez-vous à developer-dashboard.whoop.com avec votre compte WHOOP, créez une équipe, puis une application gratuite avec toutes les autorisations de lecture. Comme URL de redirection, saisissez exactement https://my.gladysassistant.com/redirect/oauth. Copiez ensuite son Client ID et son Client Secret ci-dessous. Jusqu’à 10 membres peuvent se connecter à une application sans rien demander à WHOOP.",
+        "de": "WHOOP stellt keinen gemeinsamen Schlüssel bereit: Melde dich mit deinem WHOOP-Konto bei developer-dashboard.whoop.com an, erstelle ein Team und dann eine kostenlose App mit allen Lese-Berechtigungen. Als Redirect-URL gibst du genau https://my.gladysassistant.com/redirect/oauth ein. Kopiere dann Client ID und Client Secret hier unten. Bis zu 10 Mitglieder können sich ohne Antrag bei WHOOP mit einer App verbinden.",
+        "es": "WHOOP no ofrece una clave compartida: inicie sesión en developer-dashboard.whoop.com con su cuenta WHOOP, cree un equipo y luego una aplicación gratuita con todos los permisos de lectura. Como URL de redirección, introduzca exactamente https://my.gladysassistant.com/redirect/oauth. Copie después su Client ID y su Client Secret abajo. Hasta 10 miembros pueden conectarse a una aplicación sin pedir nada a WHOOP."
+      },
+      "links": [
+        {
+          "url": "https://developer-dashboard.whoop.com",
+          "label": {
+            "en": "WHOOP developer dashboard",
+            "fr": "Tableau de bord développeur WHOOP",
+            "de": "WHOOP-Entwickler-Dashboard",
+            "es": "Panel de desarrollador de WHOOP"
+          }
+        },
+        {
+          "url": "https://github.com/William-De71/gladys-whoop/blob/main/docs/en.md",
+          "label": {
+            "en": "Step-by-step guide",
+            "fr": "Guide pas à pas",
+            "de": "Schritt-für-Schritt-Anleitung",
+            "es": "Guía paso a paso"
+          }
+        }
+      ]
+    },
+    {
+      "key": "client_id",
+      "type": "string",
+      "required": true,
+      "label": {
+        "en": "Client ID",
+        "fr": "Client ID",
+        "de": "Client ID",
+        "es": "Client ID"
+      },
+      "description": {
+        "en": "The Client ID of your WHOOP app.",
+        "fr": "Le Client ID de votre application WHOOP.",
+        "de": "Die Client ID deiner WHOOP-App.",
+        "es": "El Client ID de su aplicación WHOOP."
+      }
+    },
+    {
+      "key": "client_secret",
+      "type": "secret",
+      "required": true,
+      "label": {
+        "en": "Client Secret",
+        "fr": "Client Secret",
+        "de": "Client Secret",
+        "es": "Client Secret"
+      },
+      "description": {
+        "en": "Kept in Gladys, never shown again nor logged.",
+        "fr": "Conservé dans Gladys, plus jamais affiché ni journalisé.",
+        "de": "Bleibt in Gladys, wird nie wieder angezeigt oder protokolliert.",
+        "es": "Se guarda en Gladys, nunca se vuelve a mostrar ni se registra."
+      }
+    },
+    {
+      "key": "connect_intro",
+      "type": "section",
+      "label": {
+        "en": "2. Connect your WHOOP account",
+        "fr": "2. Connectez votre compte WHOOP",
+        "de": "2. Verbinde dein WHOOP-Konto",
+        "es": "2. Conecte su cuenta WHOOP"
+      },
+      "description": {
+        "en": "Save first, then click the button and accept every permission on WHOOP. The connection renews itself; connect again only if Gladys reports a refused access.",
+        "fr": "Enregistrez d’abord, puis cliquez sur le bouton et acceptez toutes les autorisations sur WHOOP. La connexion se renouvelle seule ; reconnectez-vous seulement si Gladys signale un accès refusé.",
+        "de": "Zuerst speichern, dann auf die Schaltfläche klicken und bei WHOOP alle Berechtigungen akzeptieren. Die Verbindung erneuert sich selbst; verbinde dich nur erneut, wenn Gladys einen abgelehnten Zugriff meldet.",
+        "es": "Guarde primero, pulse el botón y acepte todos los permisos en WHOOP. La conexión se renueva sola; vuelva a conectarse solo si Gladys indica un acceso rechazado."
+      }
+    },
+    {
+      "key": "whoop_account",
+      "type": "oauth2",
+      "label": {
+        "en": "Connect with WHOOP",
+        "fr": "Se connecter avec WHOOP",
+        "de": "Mit WHOOP verbinden",
+        "es": "Conectar con WHOOP"
+      },
+      "description": {
+        "en": "Gladys only asks to read your data (recovery, cycles, sleep, workouts, profile, body measurement); it never changes anything in WHOOP.",
+        "fr": "Gladys demande seulement à lire vos données (récupération, cycles, sommeil, entraînements, profil, mensurations) ; elle ne modifie rien dans WHOOP.",
+        "de": "Gladys fragt nur Lesezugriff auf deine Daten an (Erholung, Zyklen, Schlaf, Trainings, Profil, Körpermaße) und ändert nichts bei WHOOP.",
+        "es": "Gladys solo pide leer sus datos (recuperación, ciclos, sueño, entrenamientos, perfil, medidas corporales); nunca cambia nada en WHOOP."
+      }
+    },
+    {
+      "key": "options_intro",
+      "type": "section",
+      "label": {
+        "en": "3. Options",
+        "fr": "3. Options",
+        "de": "3. Optionen",
+        "es": "3. Opciones"
+      }
+    },
+    {
+      "key": "interval",
+      "type": "select",
+      "required": false,
+      "default": "15",
+      "label": {
+        "en": "Reading interval",
+        "fr": "Fréquence de lecture",
+        "de": "Abfrageintervall",
+        "es": "Intervalo de lectura"
+      },
+      "description": {
+        "en": "How often Gladys reads WHOOP (about four requests each time).",
+        "fr": "À quelle fréquence Gladys lit WHOOP (environ quatre requêtes à chaque fois).",
+        "de": "Wie oft Gladys WHOOP abfragt (jeweils etwa vier Anfragen).",
+        "es": "Con qué frecuencia Gladys lee WHOOP (unas cuatro solicitudes cada vez)."
+      },
+      "options": [
+        {
+          "value": "15",
+          "label": {
+            "en": "Every 15 minutes",
+            "fr": "Toutes les 15 minutes",
+            "de": "Alle 15 Minuten",
+            "es": "Cada 15 minutos"
+          }
+        },
+        {
+          "value": "30",
+          "label": {
+            "en": "Every 30 minutes",
+            "fr": "Toutes les 30 minutes",
+            "de": "Alle 30 Minuten",
+            "es": "Cada 30 minutos"
+          }
+        },
+        {
+          "value": "60",
+          "label": {
+            "en": "Every hour",
+            "fr": "Toutes les heures",
+            "de": "Stündlich",
+            "es": "Cada hora"
+          }
+        }
+      ]
+    },
+    {
+      "key": "language",
+      "type": "select",
+      "required": false,
+      "default": "auto",
+      "label": {
+        "en": "Language of the texts",
+        "fr": "Langue des textes",
+        "de": "Sprache der Texte",
+        "es": "Idioma de los textos"
+      },
+      "description": {
+        "en": "For the device name, the recovery zone and the scene summaries. Automatic follows the language of your dashboard.",
+        "fr": "Pour le nom de l’appareil, la zone de récupération et les résumés des scènes. Automatique suit la langue de votre tableau de bord.",
+        "de": "Für den Gerätenamen, die Erholungszone und die Szenen-Zusammenfassungen. Automatisch folgt der Sprache deines Dashboards.",
+        "es": "Para el nombre del dispositivo, la zona de recuperación y los resúmenes de las escenas. Automático sigue el idioma de su panel."
+      },
+      "options": [
+        {
+          "value": "auto",
+          "label": {
+            "en": "Automatic",
+            "fr": "Automatique",
+            "de": "Automatisch",
+            "es": "Automático"
+          }
+        },
+        {
+          "value": "en",
+          "label": {
+            "en": "English",
+            "fr": "Anglais",
+            "de": "Englisch",
+            "es": "Inglés"
+          }
+        },
+        {
+          "value": "fr",
+          "label": {
+            "en": "French",
+            "fr": "Français",
+            "de": "Französisch",
+            "es": "Francés"
+          }
+        },
+        {
+          "value": "de",
+          "label": {
+            "en": "German",
+            "fr": "Allemand",
+            "de": "Deutsch",
+            "es": "Alemán"
+          }
+        },
+        {
+          "value": "es",
+          "label": {
+            "en": "Spanish",
+            "fr": "Espagnol",
+            "de": "Spanisch",
+            "es": "Español"
+          }
+        }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "key": "refresh",
+      "timeout_seconds": 60,
+      "label": {
+        "en": "Sync now",
+        "fr": "Synchroniser maintenant",
+        "de": "Jetzt abrufen",
+        "es": "Sincronizar ahora"
+      },
+      "description": {
+        "en": "Reads WHOOP now instead of waiting for the next reading.",
+        "fr": "Lit WHOOP tout de suite sans attendre la prochaine lecture.",
+        "de": "Fragt WHOOP sofort ab, ohne auf die nächste Abfrage zu warten.",
+        "es": "Lee WHOOP ahora sin esperar a la próxima lectura."
+      }
+    },
+    {
+      "key": "diagnostic",
+      "timeout_seconds": 15,
+      "label": {
+        "en": "Diagnostic",
+        "fr": "Diagnostic",
+        "de": "Diagnose",
+        "es": "Diagnóstico"
+      },
+      "description": {
+        "en": "Writes an anonymized summary to the logs of the integration, to attach to a bug report.",
+        "fr": "Écrit un résumé anonymisé dans les journaux de l’intégration, à joindre à un rapport de bug.",
+        "de": "Schreibt eine anonymisierte Zusammenfassung in die Protokolle der Integration, für einen Fehlerbericht.",
+        "es": "Escribe un resumen anonimizado en los registros de la integración, para adjuntarlo a un informe de error."
+      }
+    },
+    {
+      "key": "disconnect",
+      "timeout_seconds": 30,
+      "label": {
+        "en": "Unlink the WHOOP account",
+        "fr": "Délier le compte WHOOP",
+        "de": "WHOOP-Konto trennen",
+        "es": "Desvincular la cuenta WHOOP"
+      },
+      "description": {
+        "en": "Revokes the access of your app to the account and forgets the tokens. The device stays, without new values.",
+        "fr": "Révoque l’accès de votre application au compte et oublie les jetons. L’appareil reste, sans nouvelles valeurs.",
+        "de": "Widerruft den Zugriff deiner App auf das Konto und vergisst die Tokens. Das Gerät bleibt, ohne neue Werte.",
+        "es": "Revoca el acceso de su aplicación a la cuenta y olvida los tokens. El dispositivo se queda, sin valores nuevos."
+      }
+    }
+  ],
+  "widgets": [
+    {
+      "key": "today",
+      "icon": "activity",
+      "action_timeout_seconds": 60,
+      "label": {
+        "en": "WHOOP today",
+        "fr": "WHOOP aujourd’hui",
+        "de": "WHOOP heute",
+        "es": "WHOOP hoy"
+      },
+      "description": {
+        "en": "Recovery and its zone, today’s strain, HRV, resting heart rate and calories.",
+        "fr": "Récupération et sa zone, effort du jour, VFC, fréquence au repos et calories.",
+        "de": "Erholung und Zone, heutige Belastung, HRV, Ruhepuls und Kalorien.",
+        "es": "Recuperación y su zona, esfuerzo del día, VFC, frecuencia en reposo y calorías."
+      }
+    },
+    {
+      "key": "sleep",
+      "icon": "moon",
+      "label": {
+        "en": "WHOOP sleep",
+        "fr": "WHOOP sommeil",
+        "de": "WHOOP Schlaf",
+        "es": "WHOOP sueño"
+      },
+      "description": {
+        "en": "The last sleep: performance, time asleep, stages, efficiency, sleep need.",
+        "fr": "Le dernier sommeil : performance, durée, phases, efficacité, besoin de sommeil.",
+        "de": "Der letzte Schlaf: Leistung, Dauer, Phasen, Effizienz, Schlafbedarf.",
+        "es": "El último sueño: rendimiento, duración, fases, eficiencia, sueño necesario."
+      }
+    },
+    {
+      "key": "workouts",
+      "icon": "list",
+      "label": {
+        "en": "WHOOP workouts",
+        "fr": "WHOOP entraînements",
+        "de": "WHOOP Trainings",
+        "es": "WHOOP entrenamientos"
+      },
+      "description": {
+        "en": "The last workouts with their strain, and today’s strain.",
+        "fr": "Les derniers entraînements avec leur effort, et l’effort du jour.",
+        "de": "Die letzten Trainings mit ihrer Belastung und die heutige Belastung.",
+        "es": "Los últimos entrenamientos con su esfuerzo, y el esfuerzo del día."
+      }
+    },
+    {
+      "key": "week",
+      "icon": "bar-chart-2",
+      "label": {
+        "en": "WHOOP 7 days",
+        "fr": "WHOOP 7 jours",
+        "de": "WHOOP 7 Tage",
+        "es": "WHOOP 7 días"
+      },
+      "description": {
+        "en": "The last seven days as bars: recovery, strain, sleep performance or HRV.",
+        "fr": "Les sept derniers jours en barres : récupération, effort, sommeil ou VFC.",
+        "de": "Die letzten sieben Tage als Balken: Erholung, Belastung, Schlafleistung oder HRV.",
+        "es": "Los últimos siete días en barras: recuperación, esfuerzo, sueño o VFC."
+      },
+      "settings": [
+        {
+          "key": "metric",
+          "type": "select",
+          "required": false,
+          "default": "recovery",
+          "label": {
+            "en": "Shown",
+            "fr": "Affiché",
+            "de": "Angezeigt",
+            "es": "Mostrado"
+          },
+          "options": [
+            {
+              "value": "recovery",
+              "label": {
+                "en": "Recovery",
+                "fr": "Récupération",
+                "de": "Erholung",
+                "es": "Recuperación"
+              }
+            },
+            {
+              "value": "strain",
+              "label": {
+                "en": "Day strain",
+                "fr": "Effort du jour",
+                "de": "Tagesbelastung",
+                "es": "Esfuerzo del día"
+              }
+            },
+            {
+              "value": "sleep_performance",
+              "label": {
+                "en": "Sleep performance",
+                "fr": "Performance du sommeil",
+                "de": "Schlafleistung",
+                "es": "Rendimiento del sueño"
+              }
+            },
+            {
+              "value": "hrv",
+              "label": {
+                "en": "HRV",
+                "fr": "VFC",
+                "de": "HRV",
+                "es": "VFC"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "scene_triggers": [
+    {
+      "key": "recovery_scored",
+      "label": {
+        "en": "WHOOP: recovery scored",
+        "fr": "WHOOP : récupération calculée",
+        "de": "WHOOP: Erholung berechnet",
+        "es": "WHOOP: recuperación calculada"
+      },
+      "description": {
+        "en": "WHOOP scored a new recovery: the member woke up and the morning numbers are there. Seen at the next reading.",
+        "fr": "WHOOP a calculé une nouvelle récupération : le membre s’est réveillé et les chiffres du matin sont là. Vu à la lecture suivante.",
+        "de": "WHOOP hat eine neue Erholung berechnet: Das Mitglied ist aufgewacht und die Morgenwerte sind da. Bei der nächsten Abfrage erkannt.",
+        "es": "WHOOP calculó una nueva recuperación: el miembro se ha despertado y los datos de la mañana están listos. Se detecta en la siguiente lectura."
+      },
+      "fields": [
+        {
+          "key": "member",
+          "type": "select",
+          "source": "devices",
+          "required": false,
+          "label": {
+            "en": "WHOOP member",
+            "fr": "Membre WHOOP",
+            "de": "WHOOP-Mitglied",
+            "es": "Miembro WHOOP"
+          },
+          "description": {
+            "en": "Leave empty for any member.",
+            "fr": "Laissez vide pour tous les membres.",
+            "de": "Leer lassen für jedes Mitglied.",
+            "es": "Déjelo vacío para cualquier miembro."
+          }
+        },
+        {
+          "key": "zone",
+          "type": "multi_select",
+          "required": false,
+          "label": {
+            "en": "Zone",
+            "fr": "Zone",
+            "de": "Zone",
+            "es": "Zona"
+          },
+          "description": {
+            "en": "Leave empty for any zone.",
+            "fr": "Laissez vide pour toutes les zones.",
+            "de": "Leer lassen für jede Zone.",
+            "es": "Déjelo vacío para cualquier zona."
+          },
+          "options": [
+            {
+              "value": "green",
+              "label": {
+                "en": "Green (67-100 %)",
+                "fr": "Vert (67-100 %)",
+                "de": "Grün (67-100 %)",
+                "es": "Verde (67-100 %)"
+              }
+            },
+            {
+              "value": "yellow",
+              "label": {
+                "en": "Yellow (34-66 %)",
+                "fr": "Jaune (34-66 %)",
+                "de": "Gelb (34-66 %)",
+                "es": "Amarillo (34-66 %)"
+              }
+            },
+            {
+              "value": "red",
+              "label": {
+                "en": "Red (0-33 %)",
+                "fr": "Rouge (0-33 %)",
+                "de": "Rot (0-33 %)",
+                "es": "Rojo (0-33 %)"
+              }
+            }
+          ]
+        }
+      ],
+      "variables": [
+        {
+          "key": "member",
+          "type": "string",
+          "label": {
+            "en": "Member device",
+            "fr": "Appareil du membre",
+            "de": "Gerät des Mitglieds",
+            "es": "Dispositivo del miembro"
+          }
+        },
+        {
+          "key": "member_name",
+          "type": "string",
+          "label": {
+            "en": "Member name",
+            "fr": "Nom du membre",
+            "de": "Name des Mitglieds",
+            "es": "Nombre del miembro"
+          }
+        },
+        {
+          "key": "recovery",
+          "type": "number",
+          "label": {
+            "en": "Recovery (%)",
+            "fr": "Récupération (%)",
+            "de": "Erholung (%)",
+            "es": "Recuperación (%)"
+          }
+        },
+        {
+          "key": "zone",
+          "type": "string",
+          "label": {
+            "en": "Zone (green, yellow, red)",
+            "fr": "Zone (green, yellow, red)",
+            "de": "Zone (green, yellow, red)",
+            "es": "Zona (green, yellow, red)"
+          }
+        },
+        {
+          "key": "zone_label",
+          "type": "string",
+          "label": {
+            "en": "Zone name",
+            "fr": "Nom de la zone",
+            "de": "Name der Zone",
+            "es": "Nombre de la zona"
+          }
+        },
+        {
+          "key": "resting_heart_rate",
+          "type": "number",
+          "label": {
+            "en": "Resting heart rate (bpm)",
+            "fr": "Fréquence au repos (bpm)",
+            "de": "Ruhepuls (S/min)",
+            "es": "Frecuencia en reposo (ppm)"
+          }
+        },
+        {
+          "key": "hrv",
+          "type": "number",
+          "label": {
+            "en": "HRV (ms)",
+            "fr": "VFC (ms)",
+            "de": "HRV (ms)",
+            "es": "VFC (ms)"
+          }
+        },
+        {
+          "key": "spo2",
+          "type": "number",
+          "label": {
+            "en": "Blood oxygen (%)",
+            "fr": "Oxygène sanguin (%)",
+            "de": "Blutsauerstoff (%)",
+            "es": "Oxígeno en sangre (%)"
+          }
+        },
+        {
+          "key": "skin_temperature",
+          "type": "number",
+          "label": {
+            "en": "Skin temperature (°C)",
+            "fr": "Température cutanée (°C)",
+            "de": "Hauttemperatur (°C)",
+            "es": "Temperatura de la piel (°C)"
+          }
+        },
+        {
+          "key": "calibrating",
+          "type": "boolean",
+          "label": {
+            "en": "Still calibrating",
+            "fr": "Calibrage en cours",
+            "de": "Noch in Kalibrierung",
+            "es": "Calibrando todavía"
+          }
+        },
+        {
+          "key": "sleep_hours",
+          "type": "number",
+          "label": {
+            "en": "Hours asleep",
+            "fr": "Heures de sommeil",
+            "de": "Stunden Schlaf",
+            "es": "Horas de sueño"
+          }
+        },
+        {
+          "key": "sleep_performance",
+          "type": "number",
+          "label": {
+            "en": "Sleep performance (%)",
+            "fr": "Performance du sommeil (%)",
+            "de": "Schlafleistung (%)",
+            "es": "Rendimiento del sueño (%)"
+          }
+        },
+        {
+          "key": "wake_time",
+          "type": "string",
+          "label": {
+            "en": "Wake-up time (HH:MM)",
+            "fr": "Heure de réveil (HH:MM)",
+            "de": "Aufwachzeit (HH:MM)",
+            "es": "Hora de despertar (HH:MM)"
+          }
+        },
+        {
+          "key": "summary",
+          "type": "string",
+          "label": {
+            "en": "Summary",
+            "fr": "Résumé",
+            "de": "Zusammenfassung",
+            "es": "Resumen"
+          }
+        }
+      ]
+    },
+    {
+      "key": "sleep_scored",
+      "label": {
+        "en": "WHOOP: sleep scored",
+        "fr": "WHOOP : sommeil calculé",
+        "de": "WHOOP: Schlaf berechnet",
+        "es": "WHOOP: sueño calculado"
+      },
+      "description": {
+        "en": "WHOOP scored a new sleep or nap. Seen at the next reading.",
+        "fr": "WHOOP a calculé un nouveau sommeil ou une sieste. Vu à la lecture suivante.",
+        "de": "WHOOP hat einen neuen Schlaf oder ein Nickerchen berechnet. Bei der nächsten Abfrage erkannt.",
+        "es": "WHOOP calculó un nuevo sueño o siesta. Se detecta en la siguiente lectura."
+      },
+      "fields": [
+        {
+          "key": "member",
+          "type": "select",
+          "source": "devices",
+          "required": false,
+          "label": {
+            "en": "WHOOP member",
+            "fr": "Membre WHOOP",
+            "de": "WHOOP-Mitglied",
+            "es": "Miembro WHOOP"
+          },
+          "description": {
+            "en": "Leave empty for any member.",
+            "fr": "Laissez vide pour tous les membres.",
+            "de": "Leer lassen für jedes Mitglied.",
+            "es": "Déjelo vacío para cualquier miembro."
+          }
+        },
+        {
+          "key": "kind",
+          "type": "select",
+          "required": false,
+          "label": {
+            "en": "Kind",
+            "fr": "Type",
+            "de": "Art",
+            "es": "Tipo"
+          },
+          "description": {
+            "en": "Leave empty for both.",
+            "fr": "Laissez vide pour les deux.",
+            "de": "Leer lassen für beides.",
+            "es": "Déjelo vacío para ambos."
+          },
+          "options": [
+            {
+              "value": "sleep",
+              "label": {
+                "en": "Sleep",
+                "fr": "Sommeil",
+                "de": "Schlaf",
+                "es": "Sueño"
+              }
+            },
+            {
+              "value": "nap",
+              "label": {
+                "en": "Nap",
+                "fr": "Sieste",
+                "de": "Nickerchen",
+                "es": "Siesta"
+              }
+            }
+          ]
+        }
+      ],
+      "variables": [
+        {
+          "key": "member",
+          "type": "string",
+          "label": {
+            "en": "Member device",
+            "fr": "Appareil du membre",
+            "de": "Gerät des Mitglieds",
+            "es": "Dispositivo del miembro"
+          }
+        },
+        {
+          "key": "member_name",
+          "type": "string",
+          "label": {
+            "en": "Member name",
+            "fr": "Nom du membre",
+            "de": "Name des Mitglieds",
+            "es": "Nombre del miembro"
+          }
+        },
+        {
+          "key": "kind",
+          "type": "string",
+          "label": {
+            "en": "Kind (sleep, nap)",
+            "fr": "Type (sleep, nap)",
+            "de": "Art (sleep, nap)",
+            "es": "Tipo (sleep, nap)"
+          }
+        },
+        {
+          "key": "date",
+          "type": "string",
+          "label": {
+            "en": "Date",
+            "fr": "Date",
+            "de": "Datum",
+            "es": "Fecha"
+          }
+        },
+        {
+          "key": "sleep_hours",
+          "type": "number",
+          "label": {
+            "en": "Hours asleep",
+            "fr": "Heures de sommeil",
+            "de": "Stunden Schlaf",
+            "es": "Horas de sueño"
+          }
+        },
+        {
+          "key": "sleep_minutes",
+          "type": "number",
+          "label": {
+            "en": "Minutes asleep",
+            "fr": "Minutes de sommeil",
+            "de": "Minuten Schlaf",
+            "es": "Minutos de sueño"
+          }
+        },
+        {
+          "key": "in_bed_minutes",
+          "type": "number",
+          "label": {
+            "en": "Minutes in bed",
+            "fr": "Minutes au lit",
+            "de": "Minuten im Bett",
+            "es": "Minutos en la cama"
+          }
+        },
+        {
+          "key": "deep_minutes",
+          "type": "number",
+          "label": {
+            "en": "Deep sleep (min)",
+            "fr": "Sommeil profond (min)",
+            "de": "Tiefschlaf (Min.)",
+            "es": "Sueño profundo (min)"
+          }
+        },
+        {
+          "key": "rem_minutes",
+          "type": "number",
+          "label": {
+            "en": "REM sleep (min)",
+            "fr": "Sommeil paradoxal (min)",
+            "de": "REM-Schlaf (Min.)",
+            "es": "Sueño REM (min)"
+          }
+        },
+        {
+          "key": "light_minutes",
+          "type": "number",
+          "label": {
+            "en": "Light sleep (min)",
+            "fr": "Sommeil léger (min)",
+            "de": "Leichtschlaf (Min.)",
+            "es": "Sueño ligero (min)"
+          }
+        },
+        {
+          "key": "awake_minutes",
+          "type": "number",
+          "label": {
+            "en": "Awake (min)",
+            "fr": "Éveillé (min)",
+            "de": "Wach (Min.)",
+            "es": "Despierto (min)"
+          }
+        },
+        {
+          "key": "disturbances",
+          "type": "number",
+          "label": {
+            "en": "Disturbances",
+            "fr": "Perturbations",
+            "de": "Störungen",
+            "es": "Interrupciones"
+          }
+        },
+        {
+          "key": "sleep_performance",
+          "type": "number",
+          "label": {
+            "en": "Sleep performance (%)",
+            "fr": "Performance du sommeil (%)",
+            "de": "Schlafleistung (%)",
+            "es": "Rendimiento del sueño (%)"
+          }
+        },
+        {
+          "key": "sleep_efficiency",
+          "type": "number",
+          "label": {
+            "en": "Sleep efficiency (%)",
+            "fr": "Efficacité du sommeil (%)",
+            "de": "Schlafeffizienz (%)",
+            "es": "Eficiencia del sueño (%)"
+          }
+        },
+        {
+          "key": "sleep_consistency",
+          "type": "number",
+          "label": {
+            "en": "Sleep consistency (%)",
+            "fr": "Régularité du sommeil (%)",
+            "de": "Schlafregelmäßigkeit (%)",
+            "es": "Regularidad del sueño (%)"
+          }
+        },
+        {
+          "key": "respiratory_rate",
+          "type": "number",
+          "label": {
+            "en": "Breathing rate (/min)",
+            "fr": "Fréquence respiratoire (/min)",
+            "de": "Atemfrequenz (/min)",
+            "es": "Frecuencia respiratoria (/min)"
+          }
+        },
+        {
+          "key": "sleep_need_hours",
+          "type": "number",
+          "label": {
+            "en": "Sleep need (hours)",
+            "fr": "Besoin de sommeil (heures)",
+            "de": "Schlafbedarf (Stunden)",
+            "es": "Sueño necesario (horas)"
+          }
+        },
+        {
+          "key": "sleep_start",
+          "type": "string",
+          "label": {
+            "en": "Fell asleep (HH:MM)",
+            "fr": "Endormi à (HH:MM)",
+            "de": "Eingeschlafen (HH:MM)",
+            "es": "Se durmió (HH:MM)"
+          }
+        },
+        {
+          "key": "sleep_end",
+          "type": "string",
+          "label": {
+            "en": "Woke up (HH:MM)",
+            "fr": "Réveillé à (HH:MM)",
+            "de": "Aufgewacht (HH:MM)",
+            "es": "Se despertó (HH:MM)"
+          }
+        },
+        {
+          "key": "summary",
+          "type": "string",
+          "label": {
+            "en": "Summary",
+            "fr": "Résumé",
+            "de": "Zusammenfassung",
+            "es": "Resumen"
+          }
+        }
+      ]
+    },
+    {
+      "key": "workout_scored",
+      "label": {
+        "en": "WHOOP: workout scored",
+        "fr": "WHOOP : entraînement calculé",
+        "de": "WHOOP: Training berechnet",
+        "es": "WHOOP: entrenamiento calculado"
+      },
+      "description": {
+        "en": "WHOOP scored a new workout (the strap synced it). Seen at the next reading.",
+        "fr": "WHOOP a calculé un nouvel entraînement (le bracelet l’a synchronisé). Vu à la lecture suivante.",
+        "de": "WHOOP hat ein neues Training berechnet (das Armband hat es synchronisiert). Bei der nächsten Abfrage erkannt.",
+        "es": "WHOOP calculó un nuevo entrenamiento (la pulsera lo sincronizó). Se detecta en la siguiente lectura."
+      },
+      "fields": [
+        {
+          "key": "member",
+          "type": "select",
+          "source": "devices",
+          "required": false,
+          "label": {
+            "en": "WHOOP member",
+            "fr": "Membre WHOOP",
+            "de": "WHOOP-Mitglied",
+            "es": "Miembro WHOOP"
+          },
+          "description": {
+            "en": "Leave empty for any member.",
+            "fr": "Laissez vide pour tous les membres.",
+            "de": "Leer lassen für jedes Mitglied.",
+            "es": "Déjelo vacío para cualquier miembro."
+          }
+        },
+        {
+          "key": "sport_family",
+          "type": "multi_select",
+          "required": false,
+          "label": {
+            "en": "Sport",
+            "fr": "Sport",
+            "de": "Sportart",
+            "es": "Deporte"
+          },
+          "description": {
+            "en": "Leave empty for any sport.",
+            "fr": "Laissez vide pour tous les sports.",
+            "de": "Leer lassen für jede Sportart.",
+            "es": "Déjelo vacío para cualquier deporte."
+          },
+          "options": [
+            {
+              "value": "running",
+              "label": {
+                "en": "Running",
+                "fr": "Course à pied",
+                "de": "Laufen",
+                "es": "Carrera"
+              }
+            },
+            {
+              "value": "cycling",
+              "label": {
+                "en": "Cycling",
+                "fr": "Vélo",
+                "de": "Radfahren",
+                "es": "Ciclismo"
+              }
+            },
+            {
+              "value": "walking",
+              "label": {
+                "en": "Walking and hiking",
+                "fr": "Marche et randonnée",
+                "de": "Gehen und Wandern",
+                "es": "Caminar y senderismo"
+              }
+            },
+            {
+              "value": "swimming",
+              "label": {
+                "en": "Swimming",
+                "fr": "Natation",
+                "de": "Schwimmen",
+                "es": "Natación"
+              }
+            },
+            {
+              "value": "strength",
+              "label": {
+                "en": "Strength and fitness",
+                "fr": "Musculation et fitness",
+                "de": "Kraft und Fitness",
+                "es": "Fuerza y fitness"
+              }
+            },
+            {
+              "value": "other",
+              "label": {
+                "en": "Other sports",
+                "fr": "Autres sports",
+                "de": "Andere Sportarten",
+                "es": "Otros deportes"
+              }
+            }
+          ]
+        }
+      ],
+      "variables": [
+        {
+          "key": "member",
+          "type": "string",
+          "label": {
+            "en": "Member device",
+            "fr": "Appareil du membre",
+            "de": "Gerät des Mitglieds",
+            "es": "Dispositivo del miembro"
+          }
+        },
+        {
+          "key": "member_name",
+          "type": "string",
+          "label": {
+            "en": "Member name",
+            "fr": "Nom du membre",
+            "de": "Name des Mitglieds",
+            "es": "Nombre del miembro"
+          }
+        },
+        {
+          "key": "workout_id",
+          "type": "string",
+          "label": {
+            "en": "Workout id",
+            "fr": "Identifiant de l’entraînement",
+            "de": "Trainings-ID",
+            "es": "Identificador del entrenamiento"
+          }
+        },
+        {
+          "key": "sport",
+          "type": "string",
+          "label": {
+            "en": "Sport (WHOOP name)",
+            "fr": "Sport (nom WHOOP)",
+            "de": "Sportart (WHOOP-Name)",
+            "es": "Deporte (nombre WHOOP)"
+          }
+        },
+        {
+          "key": "sport_label",
+          "type": "string",
+          "label": {
+            "en": "Sport",
+            "fr": "Sport",
+            "de": "Sportart",
+            "es": "Deporte"
+          }
+        },
+        {
+          "key": "sport_family",
+          "type": "string",
+          "label": {
+            "en": "Sport family",
+            "fr": "Famille de sport",
+            "de": "Sportgruppe",
+            "es": "Familia de deporte"
+          }
+        },
+        {
+          "key": "date",
+          "type": "string",
+          "label": {
+            "en": "Date",
+            "fr": "Date",
+            "de": "Datum",
+            "es": "Fecha"
+          }
+        },
+        {
+          "key": "start_time",
+          "type": "string",
+          "label": {
+            "en": "Start (HH:MM)",
+            "fr": "Début (HH:MM)",
+            "de": "Beginn (HH:MM)",
+            "es": "Inicio (HH:MM)"
+          }
+        },
+        {
+          "key": "duration_minutes",
+          "type": "number",
+          "label": {
+            "en": "Duration (min)",
+            "fr": "Durée (min)",
+            "de": "Dauer (Min.)",
+            "es": "Duración (min)"
+          }
+        },
+        {
+          "key": "strain",
+          "type": "number",
+          "label": {
+            "en": "Strain (0-21)",
+            "fr": "Effort (0-21)",
+            "de": "Belastung (0-21)",
+            "es": "Esfuerzo (0-21)"
+          }
+        },
+        {
+          "key": "calories",
+          "type": "number",
+          "label": {
+            "en": "Calories (kcal)",
+            "fr": "Calories (kcal)",
+            "de": "Kalorien (kcal)",
+            "es": "Calorías (kcal)"
+          }
+        },
+        {
+          "key": "heart_rate_avg",
+          "type": "number",
+          "label": {
+            "en": "Average heart rate",
+            "fr": "Fréquence cardiaque moyenne",
+            "de": "Durchschnittspuls",
+            "es": "Frecuencia cardíaca media"
+          }
+        },
+        {
+          "key": "heart_rate_max",
+          "type": "number",
+          "label": {
+            "en": "Maximum heart rate",
+            "fr": "Fréquence cardiaque maximale",
+            "de": "Maximalpuls",
+            "es": "Frecuencia cardíaca máxima"
+          }
+        },
+        {
+          "key": "distance_km",
+          "type": "number",
+          "label": {
+            "en": "Distance (km)",
+            "fr": "Distance (km)",
+            "de": "Strecke (km)",
+            "es": "Distancia (km)"
+          }
+        },
+        {
+          "key": "summary",
+          "type": "string",
+          "label": {
+            "en": "Summary",
+            "fr": "Résumé",
+            "de": "Zusammenfassung",
+            "es": "Resumen"
+          }
+        }
+      ]
+    }
+  ],
+  "scene_actions": [
+    {
+      "key": "get_summary",
+      "timeout_seconds": 15,
+      "label": {
+        "en": "WHOOP: read the latest data",
+        "fr": "WHOOP : lire les dernières données",
+        "de": "WHOOP: letzte Daten lesen",
+        "es": "WHOOP: leer los últimos datos"
+      },
+      "description": {
+        "en": "Recovery, strain, sleep, last workout and weight from the last reading, for a message or a condition.",
+        "fr": "Récupération, effort, sommeil, dernier entraînement et poids de la dernière lecture, pour un message ou une condition.",
+        "de": "Erholung, Belastung, Schlaf, letztes Training und Gewicht aus der letzten Abfrage, für eine Nachricht oder Bedingung.",
+        "es": "Recuperación, esfuerzo, sueño, último entrenamiento y peso de la última lectura, para un mensaje o una condición."
+      },
+      "fields": [
+        {
+          "key": "member",
+          "type": "select",
+          "source": "devices",
+          "required": false,
+          "label": {
+            "en": "WHOOP member",
+            "fr": "Membre WHOOP",
+            "de": "WHOOP-Mitglied",
+            "es": "Miembro WHOOP"
+          },
+          "description": {
+            "en": "Leave empty for the linked member.",
+            "fr": "Laissez vide pour le membre lié.",
+            "de": "Leer lassen für das verknüpfte Mitglied.",
+            "es": "Déjelo vacío para el miembro vinculado."
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "key": "recovery",
+          "type": "number",
+          "label": {
+            "en": "Recovery (%)",
+            "fr": "Récupération (%)",
+            "de": "Erholung (%)",
+            "es": "Recuperación (%)"
+          }
+        },
+        {
+          "key": "recovery_zone",
+          "type": "string",
+          "label": {
+            "en": "Zone (green, yellow, red)",
+            "fr": "Zone (green, yellow, red)",
+            "de": "Zone (green, yellow, red)",
+            "es": "Zona (green, yellow, red)"
+          }
+        },
+        {
+          "key": "recovery_zone_label",
+          "type": "string",
+          "label": {
+            "en": "Zone name",
+            "fr": "Nom de la zone",
+            "de": "Name der Zone",
+            "es": "Nombre de la zona"
+          }
+        },
+        {
+          "key": "resting_heart_rate",
+          "type": "number",
+          "label": {
+            "en": "Resting heart rate (bpm)",
+            "fr": "Fréquence au repos (bpm)",
+            "de": "Ruhepuls (S/min)",
+            "es": "Frecuencia en reposo (ppm)"
+          }
+        },
+        {
+          "key": "hrv",
+          "type": "number",
+          "label": {
+            "en": "HRV (ms)",
+            "fr": "VFC (ms)",
+            "de": "HRV (ms)",
+            "es": "VFC (ms)"
+          }
+        },
+        {
+          "key": "spo2",
+          "type": "number",
+          "label": {
+            "en": "Blood oxygen (%)",
+            "fr": "Oxygène sanguin (%)",
+            "de": "Blutsauerstoff (%)",
+            "es": "Oxígeno en sangre (%)"
+          }
+        },
+        {
+          "key": "skin_temperature",
+          "type": "number",
+          "label": {
+            "en": "Skin temperature (°C)",
+            "fr": "Température cutanée (°C)",
+            "de": "Hauttemperatur (°C)",
+            "es": "Temperatura de la piel (°C)"
+          }
+        },
+        {
+          "key": "day_strain",
+          "type": "number",
+          "label": {
+            "en": "Day strain (0-21)",
+            "fr": "Effort du jour (0-21)",
+            "de": "Tagesbelastung (0-21)",
+            "es": "Esfuerzo del día (0-21)"
+          }
+        },
+        {
+          "key": "calories",
+          "type": "number",
+          "label": {
+            "en": "Calories today (kcal)",
+            "fr": "Calories du jour (kcal)",
+            "de": "Kalorien heute (kcal)",
+            "es": "Calorías de hoy (kcal)"
+          }
+        },
+        {
+          "key": "sleep_hours",
+          "type": "number",
+          "label": {
+            "en": "Hours asleep",
+            "fr": "Heures de sommeil",
+            "de": "Stunden Schlaf",
+            "es": "Horas de sueño"
+          }
+        },
+        {
+          "key": "sleep_performance",
+          "type": "number",
+          "label": {
+            "en": "Sleep performance (%)",
+            "fr": "Performance du sommeil (%)",
+            "de": "Schlafleistung (%)",
+            "es": "Rendimiento del sueño (%)"
+          }
+        },
+        {
+          "key": "sleep_need_hours",
+          "type": "number",
+          "label": {
+            "en": "Sleep need (hours)",
+            "fr": "Besoin de sommeil (heures)",
+            "de": "Schlafbedarf (Stunden)",
+            "es": "Sueño necesario (horas)"
+          }
+        },
+        {
+          "key": "respiratory_rate",
+          "type": "number",
+          "label": {
+            "en": "Breathing rate (/min)",
+            "fr": "Fréquence respiratoire (/min)",
+            "de": "Atemfrequenz (/min)",
+            "es": "Frecuencia respiratoria (/min)"
+          }
+        },
+        {
+          "key": "last_workout_sport",
+          "type": "string",
+          "label": {
+            "en": "Last workout sport",
+            "fr": "Sport du dernier entraînement",
+            "de": "Sportart des letzten Trainings",
+            "es": "Deporte del último entrenamiento"
+          }
+        },
+        {
+          "key": "last_workout_strain",
+          "type": "number",
+          "label": {
+            "en": "Last workout strain",
+            "fr": "Effort du dernier entraînement",
+            "de": "Belastung des letzten Trainings",
+            "es": "Esfuerzo del último entrenamiento"
+          }
+        },
+        {
+          "key": "last_workout_date",
+          "type": "string",
+          "label": {
+            "en": "Last workout date",
+            "fr": "Date du dernier entraînement",
+            "de": "Datum des letzten Trainings",
+            "es": "Fecha del último entrenamiento"
+          }
+        },
+        {
+          "key": "last_workout_minutes",
+          "type": "number",
+          "label": {
+            "en": "Last workout duration (min)",
+            "fr": "Durée du dernier entraînement (min)",
+            "de": "Dauer des letzten Trainings (Min.)",
+            "es": "Duración del último entrenamiento (min)"
+          }
+        },
+        {
+          "key": "weight_kg",
+          "type": "number",
+          "label": {
+            "en": "Weight (kg)",
+            "fr": "Poids (kg)",
+            "de": "Gewicht (kg)",
+            "es": "Peso (kg)"
+          }
+        },
+        {
+          "key": "summary",
+          "type": "string",
+          "label": {
+            "en": "Summary",
+            "fr": "Résumé",
+            "de": "Zusammenfassung",
+            "es": "Resumen"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,523 @@
+{
+  "devices": {
+    "marie": {
+      "external_id": "ext:test-integration:member:10129",
+      "should_poll": false,
+      "params": ["WHOOP_USER_ID"],
+      "features": [
+        {
+          "external_id": "ext:test-integration:member:10129:recovery",
+          "category": "level-sensor",
+          "type": "decimal",
+          "unit": "percent",
+          "min": 0,
+          "max": 100,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:test-integration:member:10129:recovery_zone",
+          "category": "text",
+          "type": "text",
+          "min": 0,
+          "max": 0,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:test-integration:member:10129:resting_heart_rate",
+          "category": "counter-sensor",
+          "type": "integer",
+          "min": 0,
+          "max": 250,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:test-integration:member:10129:hrv",
+          "category": "duration",
+          "type": "decimal",
+          "unit": "milliseconds",
+          "min": 0,
+          "max": 400,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:test-integration:member:10129:spo2",
+          "category": "level-sensor",
+          "type": "decimal",
+          "unit": "percent",
+          "min": 0,
+          "max": 100,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:test-integration:member:10129:skin_temperature",
+          "category": "temperature-sensor",
+          "type": "decimal",
+          "unit": "celsius",
+          "min": 20,
+          "max": 45,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:test-integration:member:10129:day_strain",
+          "category": "level-sensor",
+          "type": "decimal",
+          "min": 0,
+          "max": 21,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:test-integration:member:10129:calories",
+          "category": "counter-sensor",
+          "type": "integer",
+          "min": 0,
+          "max": 20000,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:test-integration:member:10129:sleep_performance",
+          "category": "level-sensor",
+          "type": "decimal",
+          "unit": "percent",
+          "min": 0,
+          "max": 100,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:test-integration:member:10129:sleep_time",
+          "category": "duration",
+          "type": "decimal",
+          "unit": "hours",
+          "min": 0,
+          "max": 24,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:test-integration:member:10129:sleep_efficiency",
+          "category": "level-sensor",
+          "type": "decimal",
+          "unit": "percent",
+          "min": 0,
+          "max": 100,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:test-integration:member:10129:respiratory_rate",
+          "category": "level-sensor",
+          "type": "decimal",
+          "min": 0,
+          "max": 60,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:test-integration:member:10129:last_workout_strain",
+          "category": "level-sensor",
+          "type": "decimal",
+          "min": 0,
+          "max": 21,
+          "read_only": true,
+          "has_feedback": false
+        }
+      ]
+    }
+  },
+  "manifest": {
+    "actions": ["refresh", "diagnostic", "disconnect"],
+    "config_schema": [
+      {
+        "key": "intro",
+        "type": "section"
+      },
+      {
+        "key": "client_id",
+        "type": "string"
+      },
+      {
+        "key": "client_secret",
+        "type": "secret"
+      },
+      {
+        "key": "connect_intro",
+        "type": "section"
+      },
+      {
+        "key": "whoop_account",
+        "type": "oauth2"
+      },
+      {
+        "key": "options_intro",
+        "type": "section"
+      },
+      {
+        "key": "interval",
+        "type": "select"
+      },
+      {
+        "key": "language",
+        "type": "select"
+      }
+    ],
+    "scene_triggers": [
+      {
+        "key": "recovery_scored",
+        "fields": [
+          {
+            "key": "member",
+            "options": []
+          },
+          {
+            "key": "zone",
+            "options": ["green", "yellow", "red"]
+          }
+        ],
+        "variables": [
+          {
+            "key": "member",
+            "type": "string"
+          },
+          {
+            "key": "member_name",
+            "type": "string"
+          },
+          {
+            "key": "recovery",
+            "type": "number"
+          },
+          {
+            "key": "zone",
+            "type": "string"
+          },
+          {
+            "key": "zone_label",
+            "type": "string"
+          },
+          {
+            "key": "resting_heart_rate",
+            "type": "number"
+          },
+          {
+            "key": "hrv",
+            "type": "number"
+          },
+          {
+            "key": "spo2",
+            "type": "number"
+          },
+          {
+            "key": "skin_temperature",
+            "type": "number"
+          },
+          {
+            "key": "calibrating",
+            "type": "boolean"
+          },
+          {
+            "key": "sleep_hours",
+            "type": "number"
+          },
+          {
+            "key": "sleep_performance",
+            "type": "number"
+          },
+          {
+            "key": "wake_time",
+            "type": "string"
+          },
+          {
+            "key": "summary",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "key": "sleep_scored",
+        "fields": [
+          {
+            "key": "member",
+            "options": []
+          },
+          {
+            "key": "kind",
+            "options": ["sleep", "nap"]
+          }
+        ],
+        "variables": [
+          {
+            "key": "member",
+            "type": "string"
+          },
+          {
+            "key": "member_name",
+            "type": "string"
+          },
+          {
+            "key": "kind",
+            "type": "string"
+          },
+          {
+            "key": "date",
+            "type": "string"
+          },
+          {
+            "key": "sleep_hours",
+            "type": "number"
+          },
+          {
+            "key": "sleep_minutes",
+            "type": "number"
+          },
+          {
+            "key": "in_bed_minutes",
+            "type": "number"
+          },
+          {
+            "key": "deep_minutes",
+            "type": "number"
+          },
+          {
+            "key": "rem_minutes",
+            "type": "number"
+          },
+          {
+            "key": "light_minutes",
+            "type": "number"
+          },
+          {
+            "key": "awake_minutes",
+            "type": "number"
+          },
+          {
+            "key": "disturbances",
+            "type": "number"
+          },
+          {
+            "key": "sleep_performance",
+            "type": "number"
+          },
+          {
+            "key": "sleep_efficiency",
+            "type": "number"
+          },
+          {
+            "key": "sleep_consistency",
+            "type": "number"
+          },
+          {
+            "key": "respiratory_rate",
+            "type": "number"
+          },
+          {
+            "key": "sleep_need_hours",
+            "type": "number"
+          },
+          {
+            "key": "sleep_start",
+            "type": "string"
+          },
+          {
+            "key": "sleep_end",
+            "type": "string"
+          },
+          {
+            "key": "summary",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "key": "workout_scored",
+        "fields": [
+          {
+            "key": "member",
+            "options": []
+          },
+          {
+            "key": "sport_family",
+            "options": ["running", "cycling", "walking", "swimming", "strength", "other"]
+          }
+        ],
+        "variables": [
+          {
+            "key": "member",
+            "type": "string"
+          },
+          {
+            "key": "member_name",
+            "type": "string"
+          },
+          {
+            "key": "workout_id",
+            "type": "string"
+          },
+          {
+            "key": "sport",
+            "type": "string"
+          },
+          {
+            "key": "sport_label",
+            "type": "string"
+          },
+          {
+            "key": "sport_family",
+            "type": "string"
+          },
+          {
+            "key": "date",
+            "type": "string"
+          },
+          {
+            "key": "start_time",
+            "type": "string"
+          },
+          {
+            "key": "duration_minutes",
+            "type": "number"
+          },
+          {
+            "key": "strain",
+            "type": "number"
+          },
+          {
+            "key": "calories",
+            "type": "number"
+          },
+          {
+            "key": "heart_rate_avg",
+            "type": "number"
+          },
+          {
+            "key": "heart_rate_max",
+            "type": "number"
+          },
+          {
+            "key": "distance_km",
+            "type": "number"
+          },
+          {
+            "key": "summary",
+            "type": "string"
+          }
+        ]
+      }
+    ],
+    "scene_actions": [
+      {
+        "key": "get_summary",
+        "fields": ["member"],
+        "outputs": [
+          {
+            "key": "recovery",
+            "type": "number"
+          },
+          {
+            "key": "recovery_zone",
+            "type": "string"
+          },
+          {
+            "key": "recovery_zone_label",
+            "type": "string"
+          },
+          {
+            "key": "resting_heart_rate",
+            "type": "number"
+          },
+          {
+            "key": "hrv",
+            "type": "number"
+          },
+          {
+            "key": "spo2",
+            "type": "number"
+          },
+          {
+            "key": "skin_temperature",
+            "type": "number"
+          },
+          {
+            "key": "day_strain",
+            "type": "number"
+          },
+          {
+            "key": "calories",
+            "type": "number"
+          },
+          {
+            "key": "sleep_hours",
+            "type": "number"
+          },
+          {
+            "key": "sleep_performance",
+            "type": "number"
+          },
+          {
+            "key": "sleep_need_hours",
+            "type": "number"
+          },
+          {
+            "key": "respiratory_rate",
+            "type": "number"
+          },
+          {
+            "key": "last_workout_sport",
+            "type": "string"
+          },
+          {
+            "key": "last_workout_strain",
+            "type": "number"
+          },
+          {
+            "key": "last_workout_date",
+            "type": "string"
+          },
+          {
+            "key": "last_workout_minutes",
+            "type": "number"
+          },
+          {
+            "key": "weight_kg",
+            "type": "number"
+          },
+          {
+            "key": "summary",
+            "type": "string"
+          }
+        ]
+      }
+    ],
+    "widgets": [
+      {
+        "key": "today",
+        "settings": [],
+        "options": {}
+      },
+      {
+        "key": "sleep",
+        "settings": [],
+        "options": {}
+      },
+      {
+        "key": "workouts",
+        "settings": [],
+        "options": {}
+      },
+      {
+        "key": "week",
+        "settings": ["metric"],
+        "options": {
+          "metric": ["recovery", "strain", "sleep_performance", "hrv"]
+        }
+      }
+    ]
+  }
+}

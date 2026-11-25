@@ -1,0 +1,45 @@
+{
+  "name": "gladys-whoop",
+  "version": "0.1.0",
+  "private": true,
+  "description": "External Gladys Assistant integration for WHOOP (official WHOOP Developer Platform API v2): recovery, strain, sleep and workouts as a device, scene triggers, a scene action and dashboard widgets.",
+  "homepage": "https://github.com/William-De71/gladys-whoop",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/William-De71/gladys-whoop.git"
+  },
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@gladysassistant/integration-sdk": "^0.16.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.15.0",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.14.0",
+    "prettier": "^3.10.1"
+  },
+  "license": "Apache-2.0",
+  "keywords": [
+    "gladys-assistant",
+    "gladys-assistant-integration",
+    "whoop",
+    "recovery",
+    "strain",
+    "sleep",
+    "hrv",
+    "fitness-tracker",
+    "home-automation"
+  ]
+}
